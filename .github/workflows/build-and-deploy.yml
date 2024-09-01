@@ -1,0 +1,37 @@
+name: Build and Optimize Blazor WASM
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    env:
+      PROJECT_NAME: FallenClient
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v3
+        with:
+          dotnet-version: '8.0.x'
+
+      - name: Install wasm-tools workload
+        run: dotnet workload install wasm-tools
+
+      - name: Restore dependencies
+        run: dotnet restore ${{ env.PROJECT_NAME }}
+
+      - name: Build and publish Blazor WASM app
+        run: dotnet publish ${{ env.PROJECT_NAME }} -c Release -o release
+
+      - name: Upload build artifacts
+        uses: actions/upload-artifact@v3
+        with:
+          name: blazor-wasm-app
+          path: release/wwwroot
