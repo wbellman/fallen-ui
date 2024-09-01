@@ -1,0 +1,63 @@
+﻿@code {
+    [Parameter] public string Name { get; set; } = string.Empty;
+    [Parameter] public int Modifier { get; set; } = 0;
+    [Parameter] public EventCallback<int> ModifierChanged { get; set; }
+    [Parameter] public EventCallback OnRemove { get; set; }
+
+    private bool IsEditing { get; set; } = false;
+    private int EditModifier { get; set; }
+
+    private string ModifierDisplay => Modifier.ToString("+0;-0;0");
+
+    protected override void OnInitialized()
+    {
+        EditModifier = Modifier;
+    }
+
+    private void StartEdit()
+    {
+        IsEditing = true;
+    }
+
+    private async Task SaveChanges()
+    {
+        Modifier = EditModifier;
+        await ModifierChanged.InvokeAsync(EditModifier);
+        IsEditing = false;
+    }
+
+    private void CancelEdit()
+    {
+        IsEditing = false;
+        EditModifier = Modifier;
+    }
+
+    private async Task RemoveSkill()
+    {
+        await OnRemove.InvokeAsync(null);
+    }
+
+}
+
+<div class="card skill-card">
+    <div class="card-body d-flex justify-content-between align-items-center">
+        <span class="skill-name">@Name</span>
+
+        @if (IsEditing)
+        {
+            <input type="number" class="form-control skill-modifier-edit" @bind="EditModifier"/>
+            <div class="skill-card-controls">
+                <button class="btn btn-sm btn-success" @onclick="SaveChanges">Save</button>
+                <button class="btn btn-sm btn-secondary" @onclick="CancelEdit">Cancel</button>
+            </div>
+        }
+        else
+        {
+            <span class="skill-modifier">@ModifierDisplay</span>
+            <div class="skill-card-controls">
+                <button class="btn btn-sm btn-primary" @onclick="StartEdit">Edit</button>
+                <button class="btn btn-sm btn-danger" @onclick="RemoveSkill">Remove</button>
+            </div>
+        }
+    </div>
+</div>

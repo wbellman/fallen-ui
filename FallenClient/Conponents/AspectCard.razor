@@ -1,0 +1,60 @@
+﻿@code {
+    [Parameter] public string Type { get; set; } = string.Empty;
+    private bool IsEditing { get; set; } = false;
+    private string AspectText { get; set; } = "";
+}
+
+<div class="card aspect-card">
+    <div class="card-body d-flex justify-content-start align-items-start">
+        <div class="aspect-card-title">
+            <small class="text-muted">@Type</small>
+        </div>
+        
+        @if (IsEditing)
+        {
+            <textarea class="form-control" @bind="AspectText"></textarea>
+            <div class="aspect-card-controls">
+                <button class="btn btn-sm btn-success" @onclick="SaveAspect">Save</button>
+                <button class="btn btn-sm btn-secondary" @onclick="CancelEdit">Cancel</button>
+                <button class="btn btn-sm btn-danger" @onclick="ClearAspect">Clear</button>
+            </div>
+        }
+        else
+        {
+            <div class="aspect-display">
+                @if (string.IsNullOrWhiteSpace(AspectText))
+                {
+                    <span class="text-muted"></span>
+                }
+                else
+                {
+                    <span>@AspectText</span>
+                }
+            </div>
+            <button class="btn btn-sm btn-primary" @onclick="EditAspect">Edit</button>
+        }
+    </div>
+</div>
+
+@code {
+    private void EditAspect()
+    {
+        IsEditing = true;
+    }
+
+    private void SaveAspect()
+    {
+        IsEditing = false;
+    }
+
+    private void CancelEdit()
+    {
+        IsEditing = false;
+    }
+
+    private void ClearAspect()
+    {
+        AspectText = "";
+        IsEditing = false;
+    }
+}

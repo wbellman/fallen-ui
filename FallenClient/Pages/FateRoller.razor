@@ -1,0 +1,53 @@
+﻿@page "/fate-roller"
+
+@using Library.Models;
+
+@inject NavigationManager Navigation
+
+<link href="css/fate-roller.css" rel="stylesheet"/>
+
+<h3>Roll The Dice</h3>
+
+<div class="modifier-container">
+    <label for="modifier">Modifier:</label>
+    <input type="number" id="modifier" @bind="Modifier" class="modifier-input"/>
+</div>
+
+<div class="buttons-container">
+    <button @onclick="PerformNewRoll" class="roll-button">Roll</button>
+    <button @onclick="AdjustModifier" class="adjust-button">Modify</button>
+    <button @onclick="Clear" class="clear-button">Clear</button>
+</div>
+
+@if (AdjustedRoll != null)
+{
+    <div class="dice-container">
+        @foreach (var die in AdjustedRoll.Roll.Dice)
+        {
+            <img src="img/@(die.Description).png" alt="Die face" class="die-image"/>
+        }
+    </div>
+    <p>Total: @AdjustedRoll.Total</p>
+    <p class="face">@AdjustedRoll.Face</p>
+    <p class="outcome">@AdjustedRoll.Outcome</p>
+}
+
+@code {
+    private int Modifier { get; set; } = 0;
+    private AdjustedRoll? AdjustedRoll { get; set; }
+
+    private void PerformNewRoll() 
+        => AdjustedRoll = new AdjustedRoll(Modifier);
+
+    private void AdjustModifier()
+    {
+        if (AdjustedRoll != null)
+        {
+            // Adjust the modifier and keep the same roll
+            AdjustedRoll = AdjustedRoll with { Modifier = Modifier };
+        }
+    }
+
+    private void Clear() 
+        => AdjustedRoll = null;
+}

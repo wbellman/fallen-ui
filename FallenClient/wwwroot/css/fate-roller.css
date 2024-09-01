@@ -1,0 +1,105 @@
+﻿/* Headings */
+h3 {
+    text-align: center;
+    font-size: 24px;
+    margin-bottom: 20px;
+    color: #ffffff;  /* White color for headings */
+}
+
+/* Modifier Container */
+.modifier-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+.modifier-input {
+    margin-left: 10px;
+    padding: 5px;
+    width: 60px;
+    background-color: #333;  /* Dark background for input */
+    color: #e0e0e0;  /* Light text color for input */
+    border: 1px solid #555;  /* Subtle border for dark theme */
+    border-radius: 4px;
+    text-align: center;
+
+    /* Remove the spin buttons (scroll bars) */
+    -moz-appearance: textfield; /* For Firefox */
+}
+
+.modifier-input::-webkit-outer-spin-button,
+.modifier-input::-webkit-inner-spin-button {
+    -webkit-appearance: none; /* For Chrome, Safari, Edge, Opera */
+    margin: 0;
+}
+
+/* Remove spin buttons for Internet Explorer */
+input[type="number"] {
+    -ms-appearance: textfield;
+}
+
+/* Buttons */
+.buttons-container {
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+    margin-bottom: 20px;
+}
+
+.clear-button,
+.roll-button,
+.adjust-button {
+    padding: 10px 20px;
+    font-size: 16px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    background-color: #555;  /* Dark background for buttons */
+    color: #fff;  /* Light text color for buttons */
+    transition: background-color 0.3s ease;
+}
+
+.clear-button:hover,
+.roll-button:hover,
+.adjust-button:hover {
+    background-color: #777;  /* Lighter background on hover */
+}
+
+/* Dice Container */
+.dice-container {
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+    margin-top: 20px;
+}
+
+.die-image {
+    width: 50px;
+    height: 50px;
+    object-fit: contain;
+}
+
+/* Paragraphs */
+p {
+    text-align: center;
+    font-size: 18px;
+    color: #e0e0e0;  /* Light text color for paragraphs */
+}
+
+p.face {
+    text-align: center;
+    font-size: 6em;
+    margin-top: 15px;
+    margin-bottom: 0;
+    color: #e0e0e0;  /* Light text color for paragraphs */
+}
+
+p.outcome {
+    text-align: center;
+    font-size: 1em;
+    font-weight: lighter;
+    font-style: italic;
+    margin: 0;
+    color: #e0e0e0;  /* Light text color for paragraphs */
+}

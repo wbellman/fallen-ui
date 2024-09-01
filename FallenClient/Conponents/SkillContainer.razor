@@ -1,0 +1,55 @@
+﻿@using FallenClient.Library.Models
+@using FallenClient.Library.Values
+
+@code {
+    [Parameter] public List<OwnedSkill> OwnedSkills { get; set; } = new List<OwnedSkill>();
+
+    private Skill? SelectedSkill { get; set; }
+
+    private void OnSkillSelected(ChangeEventArgs e)
+    {
+        if (Enum.TryParse<Skill>(e.Value.ToString(), out var skill) && !OwnedSkills.Any(s => s.Skill == skill))
+        {
+            OwnedSkills.Add(new OwnedSkill(skill));
+        }
+
+        // Manually reset the dropdown after adding the skill
+        SelectedSkill = null;
+        StateHasChanged(); // Force UI to refresh
+    }
+
+    private void RemoveSkill(OwnedSkill ownedSkill)
+    {
+        OwnedSkills.Remove(ownedSkill);
+    }
+
+    private void OnModifierChanged(OwnedSkill ownedSkill, int newModifier)
+    {
+        var modifiedSkill = ownedSkill with { Modifier = newModifier };
+        OwnedSkills.Remove(ownedSkill);
+        OwnedSkills.Add(modifiedSkill);
+    }
+}
+
+<div class="skill-container p-3 rounded">
+    <div class="add-skill mb-3">
+        <select class="form-select" @onchange="OnSkillSelected">
+            <option value="">Select a skill...</option>
+            @foreach (var skill in Enum.GetValues<Skill>())
+            {
+                <option value="@skill" selected="@(skill == SelectedSkill ? "selected" : null)">@skill</option>
+            }
+        </select>
+    </div>
+
+    @foreach (var ownedSkill in OwnedSkills.OrderBy(s => s.Skill))
+    {
+        var name = Enum.GetName(ownedSkill.Skill);
+        
+        <div class="skill-entry mb-2">
+            <SkillCard Name="@name" Modifier="@ownedSkill.Modifier"
+                       ModifierChanged="@(newValue => OnModifierChanged(ownedSkill, newValue))"
+                       OnRemove="() => RemoveSkill(ownedSkill)"/>
+        </div>
+    }
+</div>
