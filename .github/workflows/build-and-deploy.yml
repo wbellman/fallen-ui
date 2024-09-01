@@ -70,3 +70,4 @@ jobs:
       - name: Deploy to AWS Amplify
         run: |
             aws s3 cp blazor-wasm-app.zip s3://fallen-client/blazor-wasm-app.zip --acl bucket-owner-full-control
+            aws amplify start-deployment --app-id fallen-client --branch-name main --source-url s3://fallen-client/blazor-wasm-app.zip
