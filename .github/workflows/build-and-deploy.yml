@@ -5,12 +5,17 @@ on:
     branches:
       - main
 
+permissions:
+  id-token: write
+  contents: read
+
 jobs:
   build:
     runs-on: ubuntu-latest
 
     env:
-      PROJECT_NAME: FallenClient
+      PROJECT_DIR: FallenClient
+      REGION: us-west-2
 
     steps:
       - name: Checkout code
@@ -23,15 +28,45 @@ jobs:
 
       - name: Install wasm-tools workload
         run: dotnet workload install wasm-tools
+        working-directory: ${{ env.PROJECT_DIR }}
 
       - name: Restore dependencies
-        run: dotnet restore ${{ env.PROJECT_NAME }}
+        run: dotnet restore
+        working-directory: ${{ env.PROJECT_DIR }}
 
       - name: Build and publish Blazor WASM app
-        run: dotnet publish ${{ env.PROJECT_NAME }} -c Release -o release
+        run: dotnet publish -c Release -o release
+        working-directory: ${{ env.PROJECT_DIR }}
+
+      - name: Zip build contents
+        run: |
+          cd ${{ env.PROJECT_DIR }}/release/wwwroot
+          zip -r ../blazor-wasm-app.zip ./*
 
       - name: Upload build artifacts
         uses: actions/upload-artifact@v3
         with:
           name: blazor-wasm-app
-          path: release/wwwroot
+          path: ${{ env.PROJECT_DIR }}/release/blazor-wasm-app.zip
+
+  deploy:
+    runs-on: ubuntu-latest
+    needs: build
+
+    steps:
+      - name: Download build artifacts
+        uses: actions/download-artifact@v3
+        with:
+          name: blazor-wasm-app
+
+      - name: Configure AWS credentials using OIDC
+        uses: aws-actions/configure-aws-credentials@v2
+        with:
+          role-to-assume: 
+          aws-region: ${{ env.REGION }}
+
+      - name: Deploy to AWS Amplify
+        run: |
+          unzip -o blazor-wasm-app.zip -d ./
+          aws s3 sync ./ s3://fallen-api --delete
+          aws amplify start-deployment --app-id your-amplify-app-id --branch-name main
