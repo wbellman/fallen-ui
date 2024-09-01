@@ -69,6 +69,4 @@ jobs:
 
       - name: Deploy to AWS Amplify
         run: |
-          unzip -o blazor-wasm-app.zip -d ./
-          aws s3 sync ./ s3://fallen-api --delete
-          aws amplify start-deployment --app-id your-amplify-app-id --branch-name main
+            aws s3 cp blazor-wasm-app.zip s3://fallen-client/blazor-wasm-app.zip
