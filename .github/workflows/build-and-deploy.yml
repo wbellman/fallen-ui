@@ -64,7 +64,7 @@ jobs:
       - name: Configure AWS credentials using OIDC
         uses: aws-actions/configure-aws-credentials@v3
         with:
-          role-to-assume: 
+          role-to-assume: arn:aws:iam::375376062993:role/Github-Deployment
           aws-region: ${{ env.REGION }}
 
       - name: Deploy to AWS Amplify
