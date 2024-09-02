@@ -1,0 +1,25 @@
+﻿.skill-container {
+    background-color: #2a2a2a;
+    border: 1px solid var(--border-color);
+    border-radius: 0.5rem; /* 8px equivalent */
+    padding: var(--base-padding);
+}
+
+.add-skill .form-select {
+    background-color: var(--secondary-background-color);
+    color: var(--text-color);
+    border: 1px solid var(--border-color);
+    border-radius: var(--border-radius);
+    width: 100%;
+}
+
+.add-skill .form-select:focus {
+    background-color: var(--input-background-color);
+    border-color: var(--primary-color);
+    color: var(--heading-color);
+}
+
+.skill-entry {
+    margin-bottom: 0.5rem;
+    /* Remove background color and padding */
+}

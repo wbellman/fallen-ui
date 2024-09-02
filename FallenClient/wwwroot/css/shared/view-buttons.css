@@ -1,0 +1,29 @@
+﻿/* Edit Button (View State) */
+.btn-edit {
+    background-color: transparent;
+    border: none;
+    color: var(--text-color);
+    font-size: 1.25rem; /* Adjust as needed */
+    cursor: pointer;
+    margin-left: 1rem;
+    line-height: 1;
+}
+
+.btn-edit::before {
+    content: var(--edit-icon);
+}
+
+/* Remove Button (View State) */
+.btn-remove {
+    background-color: transparent;
+    border: none;
+    color: var(--error-color);
+    font-size: 1.25rem; /* Adjust as needed */
+    cursor: pointer;
+    margin-left: 1rem;
+    line-height: 1;
+}
+
+.btn-remove::before {
+    content: var(--remove-icon);
+}

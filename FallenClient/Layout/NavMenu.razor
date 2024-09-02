@@ -1,39 +1,26 @@
-﻿<div class="top-row ps-3 navbar navbar-dark">
-    <div class="container-fluid">
-        <a class="navbar-brand" href="">Fallen Tools</a>
-        <button title="Navigation menu" class="navbar-toggler" @onclick="ToggleNavMenu">
-            <span class="navbar-toggler-icon"></span>
-        </button>
+﻿<div class="sidebar">
+    <div class="nav-item">
+        <NavLink href="" Match="NavLinkMatch.All">
+            <span class="nav-icon">🏠</span>
+        </NavLink>
+    </div>
+    <div class="nav-item">
+        <NavLink href="fate-roller">
+            <span class="nav-icon">🎲</span>
+        </NavLink>
+    </div>
+    <div class="nav-item">
+        <NavLink href="character-sheet">
+            <span class="nav-icon">📜</span>
+        </NavLink>
+    </div>
+    <div class="nav-item">
+        <NavLink href="sandbox">
+            <span class="nav-icon">🧪</span>
+        </NavLink>
     </div>
 </div>
 
-<div class="@NavMenuCssClass nav-scrollable" @onclick="ToggleNavMenu">
-    <nav class="flex-column">
-        <div class="nav-item px-3">
-            <NavLink class="nav-link" href="" Match="NavLinkMatch.All">
-                <span class="bi bi-house-door-fill-nav-menu" aria-hidden="true"></span> Home
-            </NavLink>
-        </div>
-        <div class="nav-item px-3">
-            <NavLink class="nav-link" href="fate-roller">
-                <span class="bi bi-list-nested-nav-menu" aria-hidden="true"></span> Fate Roller
-            </NavLink>
-        </div>
-        <div class="nav-item px-3">
-            <NavLink class="nav-link" href="sandbox">
-                <span class="bi bi-list-nested-nav-menu" aria-hidden="true"></span> Sandbox
-            </NavLink>
-        </div>
-    </nav>
-</div>
-
 @code {
-    private bool CollapseNavMenu { get; set; } = true;
-
-    private string? NavMenuCssClass => CollapseNavMenu ? "collapse" : null;
-
-    private void ToggleNavMenu()
-    {
-        CollapseNavMenu = !CollapseNavMenu;
-    }
+// Your C# code logic can go here, but for now, it is empty.
 }

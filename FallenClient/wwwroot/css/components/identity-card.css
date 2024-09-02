@@ -1,0 +1,53 @@
+﻿.identity-card {
+    position: relative;
+    background-color: var(--secondary-background-color);
+    border: 1px solid var(--border-color);
+    padding: var(--base-padding);
+    border-radius: var(--border-radius);
+    margin-bottom: 2rem;
+    color: var(--text-color);
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start; /* Align items to the top of the card */
+}
+
+.identity-card-left {
+    display: flex;
+    flex-direction: column;
+    flex-grow: 1; /* Allow the left section to take up remaining space */
+}
+
+.identity-card h2, .identity-card p, .identity-card input {
+    margin: 0 0 var(--small-padding) 0; /* Margin-bottom for spacing */
+    width: 100%; /* Make sure inputs take full width */
+}
+
+.identity-card .character-image {
+    max-width: 9.375rem; /* 150px equivalent */
+    height: auto;
+    border-radius: var(--border-radius);
+    object-fit: cover;
+    align-self: flex-start; /* Align the image to the top of the card */
+}
+
+.identity-card .form-control {
+    background-color: var(--secondary-background-color);
+    color: var(--text-color);
+    border: 1px solid var(--border-color);
+    border-radius: var(--border-radius);
+    padding: var(--small-padding);
+    margin-top: var(--small-padding);
+    width: 100%; /* Ensure controls are full width */
+}
+
+.identity-card .btn-save, .identity-card .btn-cancel {
+    margin-top: var(--small-padding);
+    margin-right: var(--small-padding);
+    width: 7rem; /* Set a fixed width for buttons */
+}
+
+.identity-card-controls {
+    display: flex;
+    justify-content: flex-start; /* Align controls to the left */
+    gap: var(--small-padding); /* Space between buttons */
+}

@@ -1,0 +1,66 @@
+﻿@using FallenClient.Library.Models
+@using FallenClient.Library.Values
+
+<div class="aspect-container">
+    <h3>@Title</h3>
+
+    <div class="aspect-select mb-3 d-flex flex-wrap gap-2">
+        @foreach (var aspectType in AvailableAspectTypes)
+        {
+            <button class="btn btn-primary" @onclick="() => OnAspectSelected(aspectType)">
+                @aspectType
+            </button>
+        }
+    </div>
+
+    <div class="aspect-list">
+        @foreach (var aspect in Aspects.OrderBy(a => a.Aspect.Type))
+        {
+            var showUses = aspect.Aspect.Type
+                    is AspectType.Stunt
+                    or AspectType.Magic
+                    or AspectType.Scene
+                    or AspectType.Situation
+                    or AspectType.Aspect
+                ;
+
+            var modifierActive = aspect.Aspect.Type
+                    is AspectType.Consequence
+                    or AspectType.Stressor
+                    or AspectType.Boost
+                ;
+
+            <AspectCard
+                @key="aspect.Id"
+                Active="@aspect"
+                OnRemove="() => RemoveAspect(aspect)"
+                UsesActive="@showUses"
+                ModifierActive="@modifierActive"
+                ShowRemoveButton="true"/>
+        }
+    </div>
+</div>
+
+@code {
+    [Parameter] public string Title { get; set; } = "Aspects";
+    [Parameter] public AspectType AllowedAspectType { get; set; } = AspectType.Aspect | AspectType.Boost | AspectType.Concept;
+
+    private List<ActiveAspect> Aspects { get; set; } = new List<ActiveAspect>();
+
+    private IEnumerable<AspectType> AvailableAspectTypes => Enum.GetValues(typeof(AspectType))
+        .Cast<AspectType>()
+        .Where(type => AllowedAspectType.HasFlag(type));
+
+    private void OnAspectSelected(AspectType selectedType)
+    {
+        var newAspect = new ActiveAspect(Guid.NewGuid(), new Aspect(selectedType, string.Empty));
+        Aspects.Add(newAspect);
+        Aspects = Aspects.OrderBy(a => a.Aspect.Type).ThenBy(a => a.Id).ToList();
+    }
+
+    private void RemoveAspect(ActiveAspect aspect)
+    {
+        Aspects.Remove(aspect);
+    }
+
+}

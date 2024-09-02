@@ -1,0 +1,88 @@
+﻿<div class="identity-card">
+    <div class="identity-card-left">
+        @if (IsEditMode)
+        {
+            <input type="text" @bind="CharacterName" class="form-control"/>
+            <InputFile OnChange="OnImageSelected" class="form-control"/>
+
+            <div class="identity-card-controls">
+                <button class="btn-save" @onclick="SaveChanges">Save</button>
+                <button class="btn-cancel" @onclick="CancelChanges">Cancel</button>
+            </div>
+        }
+        else
+        {
+            <h2>@CharacterName</h2>
+        }
+
+        <div class="fate-coins-display">
+            <div class="coin-controls">
+                <button class="btn-coin-change" @onclick="IncreaseFateCoins">➕</button>
+                <button class="btn-coin-change" @onclick="DecreaseFateCoins">➖</button>
+            </div>
+            <div class="coins">
+                @for (int i = 0; i < FateCoins; i++)
+                {
+                    <span class="coin">🪙</span>
+                }
+            </div>
+        </div>
+    </div>
+    <img src="@CharacterImageUrl" alt="Character Image" class="character-image"/>
+
+    @if (!IsEditMode)
+    {
+        <button class="btn-edit" @onclick="ToggleEditMode"></button>
+    }
+</div>
+
+@code {
+    private bool IsEditMode { get; set; } = false;
+    private string CharacterName { get; set; } = "Character Name";
+    private string CharacterImageUrl { get; set; } = "/img/default-character.png"; // Placeholder image
+    private int FateCoins { get; set; } = 5; // Initial number of coins
+
+    private async Task OnImageSelected(InputFileChangeEventArgs e)
+    {
+        var file = e.File;
+        if (file != null)
+        {
+            using var stream = file.OpenReadStream();
+            using var memoryStream = new MemoryStream();
+            await stream.CopyToAsync(memoryStream);
+            var base64 = Convert.ToBase64String(memoryStream.ToArray());
+            CharacterImageUrl = $"data:image/png;base64,{base64}";
+        }
+    }
+
+    private void ToggleEditMode()
+    {
+        IsEditMode = !IsEditMode;
+    }
+
+    private void SaveChanges()
+    {
+// Logic to save the changes
+        ToggleEditMode();
+    }
+
+    private void CancelChanges()
+    {
+// Logic to revert changes if necessary
+        ToggleEditMode();
+    }
+
+    private void IncreaseFateCoins()
+    {
+        FateCoins++;
+    }
+
+    private void DecreaseFateCoins()
+    {
+        if (FateCoins > 0)
+        {
+            FateCoins--;
+        }
+    }
+
+}

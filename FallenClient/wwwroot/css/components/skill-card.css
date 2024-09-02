@@ -1,0 +1,63 @@
+﻿.skill-card {
+    background-color: var(--secondary-background-color);
+    border: 1px solid #444;
+    color: var(--text-color);
+    margin-bottom: 0.5rem;
+    padding: 0.5rem;
+    border-radius: var(--border-radius);
+    width: 100%;
+    box-shadow: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.1); /* 2px 4px equivalent */
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.skill-card .card-body {
+    padding: 0.5rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+}
+
+.skill-name {
+    font-size: 1rem;
+    font-weight: bold;
+    color: var(--text-color);
+    flex-grow: 1; /* Ensures name takes up space */
+}
+
+.skill-modifier,
+.skill-modifier-edit {
+    width: 3.125rem; /* 50px equivalent */
+    background-color: var(--input-background-color);
+    color: var(--text-color);
+    border: 1px solid var(--border-color);
+    text-align: center;
+    border-radius: var(--border-radius);
+    margin-left: 0.625rem; /* 10px equivalent */
+    flex-shrink: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+/* Remove the spin buttons (scroll bars) */
+.skill-modifier-edit::-webkit-outer-spin-button,
+.skill-modifier-edit::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+}
+
+.skill-modifier-edit {
+    -moz-appearance: textfield; /* Firefox */
+    -webkit-appearance: none;   /* Chrome, Safari, Edge, Opera */
+    appearance: none;           /* Standard property */
+}
+
+/* Button controls styling */
+.skill-card-controls {
+    display: flex;
+    gap: 0.3125rem; /* 5px equivalent */
+    margin-left: 0.625rem; /* 10px equivalent */
+}

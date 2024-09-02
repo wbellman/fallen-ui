@@ -1,0 +1,29 @@
+﻿.fate-coins-display {
+    margin-top: var(--small-padding);
+}
+
+.coins {
+    font-size: 2rem; /* Relatively large size for the coins */
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.coin {
+    margin-right: 0.25rem; /* Space between coins */
+}
+
+.coin-controls {
+    margin-top: var(--small-padding);
+    display: flex;
+    gap: 0.5rem; /* Space between the +/- buttons */
+}
+
+.btn-coin-change {
+    background-color: transparent;
+    border: none;
+    color: var(--text-color);
+    font-size: 1.5rem; /* Medium-sized for +/- buttons */
+    cursor: pointer;
+    padding: 0;
+    line-height: 1;
+}

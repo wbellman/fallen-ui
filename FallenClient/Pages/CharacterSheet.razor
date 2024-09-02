@@ -1,0 +1,35 @@
+﻿@page "/character-sheet"
+@using FallenClient.Library.Models
+@using FallenClient.Library.Values
+@using FallenClient.Conponents
+
+<div class="character-sheet">
+    <!-- Identity Card at the Top -->
+    <div class="identity-section">
+        <IdentityCard />
+    </div>
+
+    <!-- Actives Section: Trouble and High Concept -->
+    <div class="aspects-section d-flex flex-column gap-3">
+        <AspectCard Active="@(new ActiveAspect(Guid.NewGuid(), new Aspect(AspectType.Trouble, string.Empty)))" />
+        <AspectCard Active="@(new ActiveAspect(Guid.NewGuid(), new Aspect(AspectType.Concept, string.Empty)))" />
+    </div>
+
+    <!-- Main Content Section with Skills Sidebar and Positive/Negative Actives -->
+    <div class="main-content">
+        <!-- Skills Sidebar on the Right -->
+        <div class="skills-sidebar">
+            <SkillContainer/>
+        </div>
+
+        <!-- Positive and Negative Actives -->
+        <div class="effects-section">
+            <AspectContainer Title="Positive Effects" AllowedAspectType="AspectType.Boost | AspectType.Stunt | AspectType.Magic | AspectType.Concept" />
+            <AspectContainer Title="Negative Effects" AllowedAspectType="AspectType.Consequence | AspectType.Stressor" />
+        </div>
+    </div>
+</div>
+
+@code {
+    // Add any necessary code or state management here if needed
+}

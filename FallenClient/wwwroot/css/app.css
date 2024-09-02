@@ -1,15 +1,72 @@
+/* Importing Component Specific Styles */
+@import url('shared/view-buttons.css');
+@import url('shared/edit-buttons.css');
+@import url('shared/fate-coins.css');
+@import url('shared/main-navigation.css');
+@import url('shared/main-layout.css');
+
+@import url('components/aspect-card.css');
+@import url('components/aspect-container.css');
+@import url('components/fate-roller.css');
+@import url('components/skill-card.css');
+@import url('components/identity-card.css');
+@import url('components/skill-container.css');
+@import url('components/usage-panel.css');
+
+@import url('pages/character-sheet.css');
+
+/* Root Variables for Theming */
+:root {
+    /* Colors */
+    --background-color: #121212;
+    --text-color: #e0e0e0;
+    --primary-color: #4aa3ff;
+    --primary-hover-color: #66b2ff;
+    --btn-background-color: #1b6ec2;
+    --btn-border-color: #1861ac;
+    --btn-hover-background-color: #155a97;
+    --btn-hover-border-color: #144f88;
+    --border-color: #555;
+    --secondary-background-color: #333;
+    --input-background-color: #444;
+    --error-color: red;
+    --success-color: #26b050;
+
+    /* Sidebar & Nav Colors */
+    --sidebar-background-color: var(--secondary-background-color); /* Reusing secondary background color */
+    --icon-color: #d7d7d7;
+    --icon-active-color: #ffffff;
+    --icon-hover-color: var(--primary-hover-color); /* Reusing primary hover color */
+    --top-row-background-color: rgba(0, 0, 0, 0.4);
+
+    /* Typography */
+    --base-font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+    --base-font-size: 16px;
+    --heading-color: #ffffff;
+
+    /* Spacing */
+    --base-padding: 1rem;
+    --small-padding: 0.5rem;
+    --border-radius: 0.25rem;
+
+    /* Button Icons */
+    --edit-icon: "✏️";
+    --remove-icon: "❌";
+}
+
 /* General Page Styles */
 html, body {
-    font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
-    background-color: #121212;
-    color: #e0e0e0;
+    font-family: var(--base-font-family), serif;
+    font-size: var(--base-font-size);
+    background-color: var(--background-color);
+    color: var(--text-color);
     margin: 0;
     padding: 0;
 }
 
 /* Headings */
 h1, h3 {
-    color: #ffffff;
+    color: var(--heading-color);
 }
 
 h1:focus {
@@ -18,24 +75,24 @@ h1:focus {
 
 /* Links and Buttons */
 a, .btn-link {
-    color: #4aa3ff;
+    color: var(--primary-color);
     text-decoration: none;
 }
 
 a:hover, .btn-link:hover {
-    color: #66b2ff;
+    color: var(--primary-hover-color);
     text-decoration: underline;
 }
 
 .btn-primary {
-    color: #ffffff;
-    background-color: #1b6ec2;
-    border-color: #1861ac;
+    color: var(--heading-color);
+    background-color: var(--btn-background-color);
+    border-color: var(--btn-border-color);
 }
 
 .btn-primary:hover {
-    background-color: #155a97;
-    border-color: #144f88;
+    background-color: var(--btn-hover-background-color);
+    border-color: var(--btn-hover-border-color);
 }
 
 .btn:focus, .btn:active:focus, .btn-link.nav-link:focus, .form-control:focus, .form-check-input:focus {
@@ -49,41 +106,41 @@ a:hover, .btn-link:hover {
 
 /* Form Controls */
 input[type="number"] {
-    background-color: #333;
-    color: #e0e0e0;
-    border: 1px solid #555;
-    border-radius: 4px;
-    padding: 0.5rem;
+    background-color: var(--secondary-background-color);
+    color: var(--text-color);
+    border: 1px solid var(--border-color);
+    border-radius: var(--border-radius);
+    padding: var(--small-padding);
 }
 
 input[type="number"]:focus {
-    background-color: #444;
-    border-color: #4aa3ff;
-    color: #ffffff;
+    background-color: var(--input-background-color);
+    border-color: var(--primary-color);
+    color: var(--heading-color);
 }
 
 /* Validation States */
 .valid.modified:not([type=checkbox]) {
-    outline: 1px solid #26b050;
+    outline: 1px solid var(--success-color);
 }
 
 .invalid {
-    outline: 1px solid red;
+    outline: 1px solid var(--error-color);
 }
 
 .validation-message {
-    color: red;
+    color: var(--error-color);
 }
 
 /* Blazor Error UI */
 #blazor-error-ui {
-    background-color: #333;
-    color: #e0e0e0;
+    background-color: var(--secondary-background-color);
+    color: var(--text-color);
     bottom: 0;
     box-shadow: 0 -1px 2px rgba(0, 0, 0, 0.2);
     display: none;
     left: 0;
-    padding: 0.6rem 1.25rem 0.7rem 1.25rem;
+    padding: calc(var(--small-padding) + 0.1rem) calc(var(--base-padding) - 0.15rem);
     position: fixed;
     width: 100%;
     z-index: 1000;
@@ -92,15 +149,15 @@ input[type="number"]:focus {
 #blazor-error-ui .dismiss {
     cursor: pointer;
     position: absolute;
-    right: 0.75rem;
-    top: 0.5rem;
+    right: calc(var(--small-padding) + 0.25rem);
+    top: var(--small-padding);
 }
 
 /* Blazor Error Boundary */
 .blazor-error-boundary {
     background-color: #b32121;
-    padding: 1rem;
-    color: white;
+    padding: var(--base-padding);
+    color: var(--heading-color);
     text-align: center;
 }
 
@@ -122,7 +179,7 @@ input[type="number"]:focus {
 }
 
 .loading-progress circle:last-child {
-    stroke: #4aa3ff;
+    stroke: var(--primary-color);
     stroke-dasharray: calc(3.141 * var(--blazor-load-percentage, 0%) * 0.8), 500%;
     transition: stroke-dasharray 0.05s ease-in-out;
 }
@@ -132,7 +189,7 @@ input[type="number"]:focus {
     text-align: center;
     font-weight: bold;
     inset: calc(20vh + 3.25rem) 0 auto 0.2rem;
-    color: #e0e0e0;
+    color: var(--text-color);
 }
 
 .loading-progress-text:after {
@@ -146,136 +203,14 @@ code {
 
 p {
     text-align: center;
-    font-size: 18px;
-    margin-top: 10px;
-    color: #e0e0e0;
+    font-size: 1.125rem;
+    margin-top: 0.625rem;
+    color: var(--text-color);
 }
-
 
 textarea.form-control {
-    background-color: #444;
-    color: #e0e0e0;
-    border: 1px solid #555;
-    margin-right: 10px;
-}
-
-
-/* -- Components -- */
-
-/* Aspect Card */
-.aspect-card {
-    background-color: #333;
-    border: 1px solid #444;
-    color: #e0e0e0;
-    margin-bottom: 1rem;
-    padding-top: 0.5rem;
-}
-
-.aspect-card-title {
-    margin-right: 10px; /* Add some spacing between the title and the text */
-    font-size: 0.9rem;
-    color: #bbb;  /* Light color for the title */
-    min-width: 100px; /* Optional: Fixed width for alignment */
-}
-
-.aspect-display {
-    flex-grow: 1;
-}
-
-.aspect-card-controls {
-    display: flex;
-    gap: 5px;
-}
-
-/* Skill Card Styling */
-.skill-card {
-    background-color: #333;
-    border: 1px solid #444;
-    color: #e0e0e0;
-    margin-bottom: 0.5rem;
-    padding: 0.5rem;
-    border-radius: 4px;
-    width: 100%;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-}
-
-.skill-card .card-body {
-    padding: 0.5rem;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    width: 100%;
-}
-
-.skill-name {
-    font-size: 1rem;
-    font-weight: bold;
-    color: #e0e0e0;
-    flex-grow: 1; /* Ensures name takes up space */
-}
-
-.skill-modifier,
-.skill-modifier-edit {
-    width: 50px;
-    background-color: #444;
-    color: #e0e0e0;
-    border: 1px solid #555;
-    text-align: center; /* Center the text horizontally */
-    border-radius: 4px;
-    margin-left: 10px;
-    flex-shrink: 0; /* Prevents the input from shrinking */
-    display: flex;
-    justify-content: center;
-    align-items: center; /* Center the text vertically */
-}
-
-/* Remove the spin buttons (scroll bars) */
-.skill-modifier-edit::-webkit-outer-spin-button,
-.skill-modifier-edit::-webkit-inner-spin-button {
-    -webkit-appearance: none;
-    margin: 0;
-}
-
-.skill-modifier-edit {
-    -moz-appearance: textfield; /* Firefox */
-    -webkit-appearance: none;   /* Chrome, Safari, Edge, Opera */
-    appearance: none;           /* Standard property */
-}
-
-/* Button controls styling */
-.skill-card-controls {
-    display: flex;
-    gap: 5px;
-    margin-left: 10px;
-}
-
-
-/* Skill Container Styling */
-.skill-container {
-    background-color: #2a2a2a;
-    border: 1px solid #444;
-    border-radius: 8px;
-    padding: 1rem;
-}
-
-.add-skill .form-select {
-    background-color: #333;
-    color: #e0e0e0;
-    border: 1px solid #555;
-    border-radius: 4px;
-    width: 100%;
-}
-
-.add-skill .form-select:focus {
-    background-color: #444;
-    border-color: #4aa3ff;
-    color: #ffffff;
-}
-
-.skill-entry {
-    margin-bottom: 0.5rem;
-    /* Remove background color and padding */
+    background-color: var(--input-background-color);
+    color: var(--text-color);
+    border: 1px solid var(--border-color);
+    margin-right: 0.625rem;
 }

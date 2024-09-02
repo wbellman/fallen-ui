@@ -1,18 +1,18 @@
 ﻿@page "/sandbox"
 @using FallenClient.Conponents
 @using FallenClient.Library.Models
+@using FallenClient.Library.Values
 
 <h3>Sandbox for Testing Components</h3>
 
 <div class="container">
     <h4>Test Components</h4>
-    <AspectCard Type="Core Concept" />
-    <SkillCard Name="Happy Time" Modifier="1"/>
+    <IdentityCard/>
+    <AspectContainer Title="Additional" AllowedAspectType="AspectType.Aspect | AspectType.Boost | AspectType.Stunt | AspectType.Concept"/>
     <SkillContainer OwnedSkills="CharacterSkills" />
 </div>
 
 
 @code {
     private List<OwnedSkill> CharacterSkills { get; set; }= [];
-
 }

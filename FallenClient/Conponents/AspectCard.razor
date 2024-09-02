@@ -1,42 +1,94 @@
-﻿@code {
-    [Parameter] public string Type { get; set; } = string.Empty;
-    private bool IsEditing { get; set; } = false;
-    private string AspectText { get; set; } = "";
-}
+﻿@using FallenClient.Library.Models
 
 <div class="card aspect-card">
-    <div class="card-body d-flex justify-content-start align-items-start">
-        <div class="aspect-card-title">
-            <small class="text-muted">@Type</small>
+    <div class="card-body d-flex justify-content-between align-items-start">
+        <div class="aspect-content flex-grow-1">
+            <div class="aspect-card-title mb-2 text-muted">
+                <small>@Active.Aspect.Type</small>
+            </div>
+
+            @if (IsEditing)
+            {
+                <textarea class="form-control mb-2" @bind="AspectText" rows="3"></textarea>
+
+                @if (ModifierActive)
+                {
+                    <input type="number" class="form-control mb-2" @bind="Modifier"/>
+                }
+
+                <div class="aspect-card-controls d-flex gap-2">
+                    <button class="btn btn-sm btn-success" @onclick="SaveAspect">Save</button>
+                    <button class="btn btn-sm btn-secondary" @onclick="CancelEdit">Cancel</button>
+                    <button class="btn btn-sm btn-danger" @onclick="ClearAspect">Clear</button>
+                </div>
+            }
+            else
+            {
+                <div class="aspect-display d-flex justify-content-between mb-2">
+                    <div>
+                        @if (string.IsNullOrWhiteSpace(Active.Aspect.Description))
+                        {
+                            <span class="text-muted">No description provided</span>
+                        }
+                        else
+                        {
+                            <span>@Active.Aspect.Description</span>
+                        }
+                    </div>
+                    @if (ModifierActive)
+                    {
+                        <span class="aspect-modifier">[@ModifierDisplay]</span>
+                    }
+                </div>
+
+                @if (UsesActive)
+                {
+                    <div class="aspect-uses">
+                        <span>Uses:</span>
+                        <div class="use-controls">
+                            <button class="btn-use-change" @onclick="IncreaseUses">➕</button>
+                            <button class="btn-use-change" @onclick="DecreaseUses">➖</button>
+                        </div>
+                        <div class="uses-display">
+                            @for (int i = 0; i < Uses; i++)
+                            {
+                                <span class="use">✅</span>
+                            }
+                        </div>
+                    </div>
+                }
+            }
         </div>
-        
-        @if (IsEditing)
-        {
-            <textarea class="form-control" @bind="AspectText"></textarea>
-            <div class="aspect-card-controls">
-                <button class="btn btn-sm btn-success" @onclick="SaveAspect">Save</button>
-                <button class="btn btn-sm btn-secondary" @onclick="CancelEdit">Cancel</button>
-                <button class="btn btn-sm btn-danger" @onclick="ClearAspect">Clear</button>
-            </div>
-        }
-        else
-        {
-            <div class="aspect-display">
-                @if (string.IsNullOrWhiteSpace(AspectText))
-                {
-                    <span class="text-muted"></span>
-                }
-                else
-                {
-                    <span>@AspectText</span>
-                }
-            </div>
-            <button class="btn btn-sm btn-primary" @onclick="EditAspect">Edit</button>
-        }
+
+        <div class="aspect-actions d-flex flex-column align-items-end">
+            <button class="btn-edit" @onclick="EditAspect"></button>
+            @if (ShowRemoveButton)
+            {
+                <button class="btn-remove mt-2" @onclick="RemoveAspect"></button>
+            }
+        </div>
     </div>
 </div>
 
 @code {
+    [Parameter] public required ActiveAspect Active { get; set; }
+    [Parameter] public EventCallback OnRemove { get; set; }
+    [Parameter] public bool ShowRemoveButton { get; set; } = false; // Default to hidden
+    [Parameter] public int Uses { get; set; } = 0; // Optional, default to 0
+    [Parameter] public bool UsesActive { get; set; } = false; // Optional, default to false
+    [Parameter] public int Modifier { get; set; } = 0; // Optional, default to 0
+    [Parameter] public bool ModifierActive { get; set; } = false; // Optional, default to false
+
+    private bool IsEditing { get; set; } = false;
+
+    private string AspectText
+    {
+        get => Active.Aspect.Description;
+        set => Active.Aspect = Active.Aspect with { Description = value };
+    }
+
+    private string ModifierDisplay => Modifier.ToString("+0;-0;0");
+
     private void EditAspect()
     {
         IsEditing = true;
@@ -54,7 +106,29 @@
 
     private void ClearAspect()
     {
-        AspectText = "";
+        Active.Aspect = Active.Aspect with { Description = string.Empty };
         IsEditing = false;
     }
+
+    private async Task RemoveAspect()
+    {
+        if (OnRemove.HasDelegate)
+        {
+            await OnRemove.InvokeAsync();
+        }
+    }
+
+    private void IncreaseUses()
+    {
+        Uses++;
+    }
+
+    private void DecreaseUses()
+    {
+        if (Uses > 0)
+        {
+            Uses--;
+        }
+    }
+
 }

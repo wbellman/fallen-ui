@@ -1,0 +1,64 @@
+﻿/* Sidebar container */
+.sidebar {
+    width: 60px; /* Adjust width as needed */
+    background-color: var(--secondary-background-color);
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding-top: 20px; /* Space from the top */
+}
+
+/* Individual navigation items */
+.nav-item {
+    margin-bottom: 20px; /* Space between items */
+}
+
+/* Icons */
+.nav-icon {
+    font-size: 1.5rem; /* Adjust icon size as needed */
+    color: var(--text-color);
+    display: block;
+    text-align: center; /* Center the icon horizontally */
+    line-height: 1; /* Remove extra spacing */
+}
+
+/* Highlight active link */
+.nav-item .active .nav-icon {
+    color: var(--primary-color); /* Change color when active */
+}
+
+/* Hover effect */
+.nav-item:hover .nav-icon {
+    color: var(--primary-hover-color);
+}
+
+/* Additional global styles that might be relevant */
+
+/* Top row styling, assuming you have a header row */
+.top-row {
+    height: 3.5rem;
+    background-color: rgba(0,0,0,0.4);
+}
+
+/* Custom navbar toggler (if you plan to have a toggle button elsewhere) */
+.navbar-toggler {
+    cursor: pointer;
+    background-color: transparent;
+    border: none;
+    font-size: 1.5rem; /* Adjust icon size as needed */
+    color: var(--text-color);
+}
+
+/* Brand styling, if there’s a brand name in the sidebar */
+.navbar-brand {
+    font-size: 1.1rem;
+    transition: opacity 0.3s ease;
+    padding-left: 15px; /* Adjust spacing if needed */
+}
+
+/* Additional utility styles, like scrolling in tall sidebars */
+.nav-scrollable {
+    height: calc(100vh - 3.5rem);
+    overflow-y: auto;
+}

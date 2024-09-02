@@ -1,0 +1,13 @@
+﻿.uses-display {
+    
+}
+
+.uses-display .use {
+    font-size: 1.5rem;    
+}
+
+.use-controls .btn-use-change {
+    border: none;
+    background: none;
+    font-size: 0.85rem;
+}

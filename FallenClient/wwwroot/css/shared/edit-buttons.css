@@ -1,0 +1,34 @@
+﻿/* Save Button */
+.btn-save {
+    background-color: var(--btn-background-color);
+    border: 1px solid var(--btn-border-color);
+    color: var(--heading-color);
+    padding: var(--small-padding) var(--base-padding);
+    border-radius: var(--border-radius);
+    cursor: pointer;
+    text-align: center;
+    font-size: 1rem;
+    margin-right: var(--small-padding); /* Space between save and cancel */
+}
+
+.btn-save:hover {
+    background-color: var(--btn-hover-background-color);
+    border-color: var(--btn-hover-border-color);
+}
+
+/* Cancel Button */
+.btn-cancel {
+    background-color: var(--input-background-color);
+    border: 1px solid var(--border-color);
+    color: var(--text-color);
+    padding: var(--small-padding) var(--base-padding);
+    border-radius: var(--border-radius);
+    cursor: pointer;
+    text-align: center;
+    font-size: 1rem;
+}
+
+.btn-cancel:hover {
+    background-color: var(--btn-hover-background-color);
+    border-color: var(--btn-hover-border-color);
+}
