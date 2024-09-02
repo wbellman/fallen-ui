@@ -55,6 +55,11 @@
 }
 
 /* General Page Styles */
+
+*, ::after, ::before {
+    box-sizing: revert;
+}
+
 html, body {
     font-family: var(--base-font-family), serif;
     font-size: var(--base-font-size);

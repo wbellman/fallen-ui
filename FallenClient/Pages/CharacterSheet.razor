@@ -1,4 +1,5 @@
 ﻿@page "/character-sheet"
+@using System.Text.Json
 @using FallenClient.Library.Models
 @using FallenClient.Library.Values
 @using FallenClient.Conponents
@@ -6,13 +7,34 @@
 <div class="character-sheet">
     <!-- Identity Card at the Top -->
     <div class="identity-section">
-        <IdentityCard />
+        <IdentityCard/>
     </div>
+
+    <div class="control-panel-card">
+        <div class="control-panel">
+            <!-- Left-aligned buttons -->
+            <div class="left-controls">
+                <button class="btn btn-primary" @onclick="SaveCharacterSheet">Save</button>
+                <select class="form-select">
+                    <option selected>Select Character</option>
+                    <!-- Options for existing characters go here -->
+                </select>
+                <button class="btn btn-secondary">Load</button>
+                <button class="btn btn-success">New</button>
+            </div>
+
+            <!-- Right-aligned button -->
+            <div class="right-controls">
+                <button class="btn btn-danger">Delete</button>
+            </div>
+        </div>
+    </div>
+
 
     <!-- Actives Section: Trouble and High Concept -->
     <div class="aspects-section d-flex flex-column gap-3">
-        <AspectCard Active="@(new ActiveAspect(Guid.NewGuid(), new Aspect(AspectType.Trouble, string.Empty)))" />
-        <AspectCard Active="@(new ActiveAspect(Guid.NewGuid(), new Aspect(AspectType.Concept, string.Empty)))" />
+        <AspectCard Active="@(new ActiveAspect(Guid.NewGuid(), new Aspect(AspectType.Trouble, string.Empty)))"/>
+        <AspectCard Active="@(new ActiveAspect(Guid.NewGuid(), new Aspect(AspectType.Concept, string.Empty)))"/>
     </div>
 
     <!-- Main Content Section with Skills Sidebar and Positive/Negative Actives -->
@@ -24,12 +46,47 @@
 
         <!-- Positive and Negative Actives -->
         <div class="effects-section">
-            <AspectContainer Title="Positive Effects" AllowedAspectType="AspectType.Boost | AspectType.Stunt | AspectType.Magic | AspectType.Concept" />
-            <AspectContainer Title="Negative Effects" AllowedAspectType="AspectType.Consequence | AspectType.Stressor" />
+            <AspectContainer Title="Positive Effects" AllowedAspectType="AspectType.Boost | AspectType.Stunt | AspectType.Magic | AspectType.Concept"/>
+            <AspectContainer Title="Negative Effects" AllowedAspectType="AspectType.Consequence | AspectType.Stressor"/>
         </div>
     </div>
 </div>
 
 @code {
-    // Add any necessary code or state management here if needed
+
+    private Character Character { get; set; } = new Character(null, [], []);
+
+    private string? SerializedCharacterSheet { get; set; }
+
+    // Method to serialize the character sheet data to JSON
+    private void SerializeCharacterSheet()
+    {
+        SerializedCharacterSheet = JsonSerializer.Serialize(Character);
+    }
+
+    // Method to deserialize JSON back into the character sheet data
+    private void DeserializeCharacterSheet()
+    {
+        if (!string.IsNullOrWhiteSpace(SerializedCharacterSheet))
+        {
+            Character = JsonSerializer
+                            .Deserialize<Character>(SerializedCharacterSheet)
+                        ?? new Character(null, [], []);
+        }
+    }
+
+    // Example usage in UI
+    private void SaveCharacterSheet()
+    {
+        SerializeCharacterSheet();
+        // Logic to persist SerializedCharacterSheet (e.g., send to a service)
+        Console.WriteLine(SerializedCharacterSheet); // Print to console
+    }
+
+    private void LoadCharacterSheet()
+    {
+        DeserializeCharacterSheet();
+        // Logic to load SerializedCharacterSheet from storage or a service
+    }
+    
 }
