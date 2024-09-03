@@ -2,4 +2,4 @@
 
 namespace FallenClient.Library.Models;
 
-public record OwnedSkill(Skill Skill, int Modifier = 0);
+public record OwnedSkill(Skill Skill, int Modifier = 1);
