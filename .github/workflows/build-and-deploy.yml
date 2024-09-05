@@ -8,6 +8,7 @@ on:
 permissions:
   id-token: write
   contents: read
+  packages: read  # Give permissions to read from GitHub Packages
 
 jobs:
   build:
