@@ -1,26 +1,40 @@
 ﻿@page "/character-sheet"
+@using System.Diagnostics.CodeAnalysis
 @using System.Text.Json
 @using FallenClient.Library.Models
 @using FallenClient.Library.Values
-@using FallenClient.Conponents
+@using FallenClient.Components
+@using FallenClient.Library.Clients
+@using global::Library.Operations.Outcomes
+
+@inject FallenApi Api
 
 <div class="character-sheet">
     <!-- Identity Card at the Top -->
     <div class="identity-section">
-        <IdentityCard/>
+        <IdentityCard
+            Name="@Character?.Name"
+            Portrait="@Character?.Portrait"
+            Coins="@Coins"
+            />
     </div>
 
     <div class="control-panel-card">
         <div class="control-panel">
             <!-- Left-aligned buttons -->
             <div class="left-controls">
-                <button class="btn btn-primary" @onclick="SaveCharacterSheet">Save</button>
+                <button class="btn btn-primary" @onclick="SaveCharacterSheet">💾</button>
                 <select class="form-select">
                     <option selected>Select Character</option>
                     <!-- Options for existing characters go here -->
+                    @foreach (var character in AvailableCharacters)
+                    {
+                        <option>@character</option>
+                    } 
                 </select>
-                <button class="btn btn-secondary">Load</button>
-                <button class="btn btn-success">New</button>
+                <button class="bth btn-outline-secondary" @onclick="LoadCharacterList">🔃</button>
+                <button class="btn btn-secondary">📂</button>
+                <button class="btn btn-success">🗒️</button>
             </div>
 
             <!-- Right-aligned button -->
@@ -54,39 +68,64 @@
 
 @code {
 
-    private Character Character { get; set; } = new Character(null, [], []);
+    private Character? Character { get; set; }
+    private List<string> AvailableCharacters { get; set; } = [];
+    
+    private int Coins => Character?.Coins ?? 0;
 
-    private string? SerializedCharacterSheet { get; set; }
+    protected override async Task OnInitializedAsync()
+    {
+        await base.OnInitializedAsync();
+        await LoadCharacterList();
+        await LoadCharacterSheet();
+    }
 
     // Method to serialize the character sheet data to JSON
-    private void SerializeCharacterSheet()
+    private async Task SaveCharacterSheet()
     {
-        SerializedCharacterSheet = JsonSerializer.Serialize(Character);
+        var characterJson = JsonSerializer.Serialize(Character);
+        Console.WriteLine("Character JSON: " + characterJson);
     }
 
     // Method to deserialize JSON back into the character sheet data
-    private void DeserializeCharacterSheet()
+    private async Task LoadCharacterList()
     {
-        if (!string.IsNullOrWhiteSpace(SerializedCharacterSheet))
+        Console.WriteLine("Loading character list...");
+        var listOutcome = await Api.Get<List<string>>("/api/characters/list");
+
+        if (listOutcome is FailureOutcome<List<string>> fail)
         {
-            Character = JsonSerializer
-                            .Deserialize<Character>(SerializedCharacterSheet)
-                        ?? new Character(null, [], []);
+            Console.WriteLine("Failed to load character list: " + fail.Value.Message);
+            return;
         }
+
+        AvailableCharacters = listOutcome.Finish().Value as List<string> ?? [];
+        Console.WriteLine($"Loaded {AvailableCharacters.Count} characters.");
     }
 
-    // Example usage in UI
-    private void SaveCharacterSheet()
+    private async Task LoadCharacterSheet(string? name = null)
     {
-        SerializeCharacterSheet();
-        // Logic to persist SerializedCharacterSheet (e.g., send to a service)
-        Console.WriteLine(SerializedCharacterSheet); // Print to console
+        var characterToLoad = name ?? AvailableCharacters.FirstOrDefault();
+        Console.WriteLine($"Loading character {characterToLoad}...");
+        
+        if(string.IsNullOrWhiteSpace(characterToLoad))
+        {
+            Console.WriteLine($"No characters available.");
+            Character = new Character();
+            return;
+        }
+        
+        var characterOutcome = await Api.Get<Character>($"/api/characters/load/{characterToLoad}");
+
+        if (characterOutcome is FailureOutcome<Character> fail)
+        {
+            Console.WriteLine($"Failed to load character {characterToLoad}: " + fail.Value.Message);
+            Character = new Character();
+            return;
+        }
+
+        Character = characterOutcome.Finish().Value as Character ?? new Character();
+        Console.WriteLine($"Loaded character {characterToLoad}!");
     }
 
-    private void LoadCharacterSheet()
-    {
-        DeserializeCharacterSheet();
-        // Logic to load SerializedCharacterSheet from storage or a service
-    }
-    
 }

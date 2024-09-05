@@ -2,7 +2,7 @@
     <div class="identity-card-left">
         @if (IsEditMode)
         {
-            <input type="text" @bind="CharacterName" class="form-control"/>
+            <input type="text" @bind="Name" class="form-control"/>
             <InputFile OnChange="OnImageSelected" class="form-control"/>
 
             <div class="identity-card-controls">
@@ -12,7 +12,7 @@
         }
         else
         {
-            <h2>@CharacterName</h2>
+            <h2>@Name</h2>
         }
 
         <div class="fate-coins-display">
@@ -21,14 +21,14 @@
                 <button class="btn-coin-change" @onclick="DecreaseFateCoins">➖</button>
             </div>
             <div class="coins">
-                @for (int i = 0; i < FateCoins; i++)
+                @for (int i = 0; i < Coins; i++)
                 {
                     <span class="coin">🪙</span>
                 }
             </div>
         </div>
     </div>
-    <img src="@CharacterImageUrl" alt="Character Image" class="character-image"/>
+    <img src="@Portrait" alt="Character Image" class="character-image"/>
 
     @if (!IsEditMode)
     {
@@ -38,9 +38,9 @@
 
 @code {
     private bool IsEditMode { get; set; } = false;
-    private string CharacterName { get; set; } = "Character Name";
-    private string CharacterImageUrl { get; set; } = "/img/default-character.png"; // Placeholder image
-    private int FateCoins { get; set; } = 5; // Initial number of coins
+    [Parameter] public string Name { get; set; } = "Character Name";
+    [Parameter] public string Portrait { get; set; } = "/img/default-character.png"; // Placeholder image
+    [Parameter] public int Coins { get; set; } = 5; // Initial number of coins
 
     private async Task OnImageSelected(InputFileChangeEventArgs e)
     {
@@ -51,7 +51,7 @@
             using var memoryStream = new MemoryStream();
             await stream.CopyToAsync(memoryStream);
             var base64 = Convert.ToBase64String(memoryStream.ToArray());
-            CharacterImageUrl = $"data:image/png;base64,{base64}";
+            Portrait = $"data:image/png;base64,{base64}";
         }
     }
 
@@ -74,14 +74,14 @@
 
     private void IncreaseFateCoins()
     {
-        FateCoins++;
+        Coins++;
     }
 
     private void DecreaseFateCoins()
     {
-        if (FateCoins > 0)
+        if (Coins > 0)
         {
-            FateCoins--;
+            Coins--;
         }
     }
 
