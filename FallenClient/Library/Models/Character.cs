@@ -7,7 +7,7 @@ public class Character
 {
     private int _coins = 3;
     
-    private const string DefaultPortrait = "./images/character-portrait.png";
+    private const string DefaultPortrait = "./images/default-character.png";
     
     [JsonIgnore] public bool HasBenefits => Benefits?.Count != 0;
     [JsonIgnore] public bool HasConditions => Conditions?.Count != 0;

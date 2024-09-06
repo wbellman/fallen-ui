@@ -9,7 +9,7 @@
 
 @inject FallenApi Api
 
-<div class="character-sheet">
+<div class="-sheet">
     <!-- Identity Card at the Top -->
     <div class="identity-section">
         <IdentityCard
@@ -26,7 +26,7 @@
                 <button class="btn btn-primary" @onclick="SaveCharacterSheet">💾</button>
                 <select class="form-select">
                     <option selected>Select Character</option>
-                    <!-- Options for existing characters go here -->
+                    <!-- Options for existing s go here -->
                     @foreach (var character in AvailableCharacters)
                     {
                         <option>@character</option>
@@ -80,52 +80,52 @@
         await LoadCharacterSheet();
     }
 
-    // Method to serialize the character sheet data to JSON
+    // Method to serialize the  sheet data to JSON
     private async Task SaveCharacterSheet()
     {
-        var characterJson = JsonSerializer.Serialize(Character);
-        Console.WriteLine("Character JSON: " + characterJson);
+        var Json = JsonSerializer.Serialize(Character);
+        Console.WriteLine("Character JSON: " + Json);
     }
 
-    // Method to deserialize JSON back into the character sheet data
+    // Method to deserialize JSON back into the  sheet data
     private async Task LoadCharacterList()
     {
-        Console.WriteLine("Loading character list...");
-        var listOutcome = await Api.Get<List<string>>("/api/characters/list");
+        Console.WriteLine("Loading  list...");
+        var listOutcome = await Api.Get<List<string>>("/characters/list");
 
         if (listOutcome is FailureOutcome<List<string>> fail)
         {
-            Console.WriteLine("Failed to load character list: " + fail.Value.Message);
+            Console.WriteLine("Failed to load  list: " + fail.Value.Message);
             return;
         }
 
         AvailableCharacters = listOutcome.Finish().Value as List<string> ?? [];
-        Console.WriteLine($"Loaded {AvailableCharacters.Count} characters.");
+        Console.WriteLine($"Loaded {AvailableCharacters.Count} s.");
     }
 
     private async Task LoadCharacterSheet(string? name = null)
     {
         var characterToLoad = name ?? AvailableCharacters.FirstOrDefault();
-        Console.WriteLine($"Loading character {characterToLoad}...");
+        Console.WriteLine($"Loading {characterToLoad}...");
         
         if(string.IsNullOrWhiteSpace(characterToLoad))
         {
-            Console.WriteLine($"No characters available.");
+            Console.WriteLine($"No s available.");
             Character = new Character();
             return;
         }
         
-        var characterOutcome = await Api.Get<Character>($"/api/characters/load/{characterToLoad}");
+        var Outcome = await Api.Get<Character>($"/characters/load/{characterToLoad}");
 
-        if (characterOutcome is FailureOutcome<Character> fail)
+        if (Outcome is FailureOutcome<Character> fail)
         {
-            Console.WriteLine($"Failed to load character {characterToLoad}: " + fail.Value.Message);
+            Console.WriteLine($"Failed to load {characterToLoad}: " + fail.Value.Message);
             Character = new Character();
             return;
         }
 
-        Character = characterOutcome.Finish().Value as Character ?? new Character();
-        Console.WriteLine($"Loaded character {characterToLoad}!");
+        Character = Outcome.Finish().Value as Character ?? new Character();
+        Console.WriteLine($"Loaded  {characterToLoad}!");
     }
 
 }

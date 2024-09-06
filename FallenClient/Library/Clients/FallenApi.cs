@@ -104,23 +104,8 @@ public class FallenApi(
                     endpoint, response.StatusCode
                 ));
 
-            var content = await response.Content.ReadAsStringAsync(token);
+            return Success(await response.Content.ReadAsStringAsync(token));
 
-            var gatewayResponse = JsonSerializer
-                .Deserialize<ApiGatewayResponse>(content);
-
-            if (gatewayResponse == null)
-                return Failure<string>(new IsNull<ApiGatewayResponse>("Could not understand response: " + content));
-
-            bool IsSuccess(int code) => code is >= 200 and <= 299;
-
-            if (IsSuccess(gatewayResponse.StatusCode))
-                return Success(gatewayResponse.Body);
-
-
-            return Failure<string>(new HttpError(
-                endpoint, (HttpStatusCode)gatewayResponse.StatusCode
-            ));
         }
         catch (Exception e)
         {
